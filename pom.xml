@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.codeartisans</groupId>
+        <artifactId>codeartisans-parent</artifactId>
+        <version>5</version>
+    </parent>
+
+    <groupId>org.codeartisans.shiro</groupId>
+    <artifactId>shiro-ext</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <url>http://github.com/eskatos/shiro-ext</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>Copyrights retained by each developer.</comments>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>scm:git:git@github.com:eskatos/shiro-ext.git</url>
+        <connection>scm:git:git@github.com:eskatos/shiro-ext.git</connection>
+        <developerConnection>scm:git:git@github.com:eskatos/shiro-ext.git</developerConnection>
+    </scm>
+
+    <modules>
+        <module>base</module>
+        <module>x509</module>
+    </modules>
+
+    <properties>
+        <version.slf4j>1.6.1</version.slf4j>
+        <version.shiro>1.1.0</version.shiro>
+        <version.bouncy>1.45</version.bouncy>
+        <version.jodatime>1.6.2</version.jodatime>
+    </properties>
+
+    <developers>
+        <developer>
+            <id>paul@nosphere.org</id>
+            <name>Paul Merlin</name>
+            <email>paul@nosphere.org</email>
+        </developer>
+    </developers>
+
+</project>
