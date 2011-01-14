@@ -26,11 +26,18 @@ public class X509AuthenticationInfo
 
     private static final long serialVersionUID = 1L;
     private final Set<X509Certificate> grantedIssuers;
+    private final X509Certificate subjectCertificate;
 
-    public X509AuthenticationInfo( X509Certificate clientCert, Set<X509Certificate> grantedIssuers, String realmName )
+    public X509AuthenticationInfo( String principal, X509Certificate clientCert, Set<X509Certificate> grantedIssuers, String realmName )
     {
-        super( clientCert, null, realmName );
+        super( principal, null, realmName );
+        this.subjectCertificate = clientCert;
         this.grantedIssuers = grantedIssuers;
+    }
+
+    public X509Certificate getSubjectCertificate()
+    {
+        return subjectCertificate;
     }
 
     public Set<TrustAnchor> getGrantedTrustAnchors()
