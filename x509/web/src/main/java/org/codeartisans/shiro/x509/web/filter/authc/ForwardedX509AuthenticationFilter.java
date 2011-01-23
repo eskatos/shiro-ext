@@ -180,4 +180,24 @@ public class ForwardedX509AuthenticationFilter
         return Hex.encodeToString( Hex.decode( input ) ); // FIXME Upstream Hex implementation is not char encoding safe, fix it there
     }
 
+    public void setUseCertificate( boolean useCertificate )
+    {
+        this.useCertificate = useCertificate;
+    }
+
+    public void setUseIssuerDN( boolean useIssuerDN )
+    {
+        this.useIssuerDN = useIssuerDN;
+    }
+
+    public void setUseSerialNumber( boolean useSerialNumber )
+    {
+        this.useSerialNumber = useSerialNumber;
+    }
+
+    public void setUseSubjectDN( boolean useSubjectDN )
+    {
+        this.useSubjectDN = useSubjectDN;
+    }
+
 }
