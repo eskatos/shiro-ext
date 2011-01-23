@@ -2,7 +2,11 @@
 Apache Shiro Extensions
 =======================
 
-Project is splitted in two jars :
+X509
+----
+
+This extension is splitted in two jars :
+
 - shiro-ext-x509-core
 - shiro-ext-x509-web
 
@@ -11,9 +15,7 @@ You certainly want to depend on the -web artifact.
 Be sure to read about X509 certificates before choosing an authentication strategy.
 
 
-
-CredentialsMatchers
--------------------
+### CredentialsMatchers
 
 The following credential matchers are provided:
 
@@ -24,18 +26,16 @@ The following credential matchers are provided:
 
 
 
-Your X509 Realm
----------------
+### Your X509 Realm
 
-You will need to implement a Realm extending `AbstractX509Realm` and use it:
+You will need to implement a Realm extending AbstractX509Realm and use it:
 
     [main]
     x509Realm = com.acme.YourRealm
 
 
 
-Client X509Certificate authentication
--------------------------------------
+### Client X509Certificate authentication
 
 Use the following filter in your configuration:
 
@@ -47,26 +47,25 @@ Use the following filter in your configuration:
 
 
 
-Forwarded X509 authentication
------------------------------
+### Forwarded X509 authentication
 
 You need this if your application is deployed in a container siting behind a reverse proxy.
 
 For now the HTTP headers used to read forwarded SSL data from reverse proxies use the following names:
 
-- `X-SSL-Client-Cert`
-- `X-SSL-Client-S-DN`
-- `X-SSL-Client-I-DN`
-- `X-SSL-Client-M-Serial`
+- X-SSL-Client-Cert
+- X-SSL-Client-S-DN
+- X-SSL-Client-I-DN
+- X-SSL-Client-M-Serial
 
 If you need configuration support for the header names, please fill an issue.
 
 By default the filter read __no__ headers and hence simply refuse any authentication attempt.
-You need to choose which headers to use in order to build the `X509AuthenticationToken` that will be used by the `CredentialMatcher` of your choice.
+You need to choose which headers to use in order to build the X509AuthenticationToken that will be used by the CredentialMatcher of your choice.
 
-Here are the three configuration examples and the `CredentialMatcher` to use with:
+Here are the three configuration examples and the CredentialMatcher to use with:
 
-For `X509CredentialsPKIXPathMatcher` or `X509CredentialsSha256Matcher`:
+For X509CredentialsPKIXPathMatcher or X509CredentialsSha256Matcher:
 
     [main]
     x509 = org.codeartisans.shiro.x509.web.filter.authc.ForwardedX509AuthenticationFilter
@@ -76,7 +75,7 @@ For `X509CredentialsPKIXPathMatcher` or `X509CredentialsSha256Matcher`:
     /protected = x509
 
 
-For `X509CredentialsIssuerDNSNMatcher`:
+For X509CredentialsIssuerDNSNMatcher:
 
     [main]
     x509 = org.codeartisans.shiro.x509.web.filter.authc.ForwardedX509AuthenticationFilter
@@ -87,7 +86,7 @@ For `X509CredentialsIssuerDNSNMatcher`:
     /protected = x509
 
 
-For `X509CredentialsSujbectDNMatcher`:
+For X509CredentialsSujbectDNMatcher:
 
     [main]
     x509 = org.codeartisans.shiro.x509.web.filter.authc.ForwardedX509AuthenticationFilter
