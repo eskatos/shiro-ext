@@ -32,7 +32,6 @@
     </scm>
 
     <modules>
-        <module>base</module>
         <module>x509</module>
     </modules>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Paul Merlin. All Rights Reserved.
+ * Copyright (c) 2011, Paul Merlin. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,19 @@
 package org.codeartisans.shiro.x509.core.authc;
 
 import java.security.GeneralSecurityException;
+import java.security.Security;
 import java.security.cert.CertPathBuilder;
 import java.security.cert.CertPathBuilderResult;
 import java.security.cert.X509Certificate;
-
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.credential.CredentialsMatcher;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.x509.CertPathReviewerException;
 import org.bouncycastle.x509.ExtendedPKIXBuilderParameters;
 import org.bouncycastle.x509.PKIXCertPathReviewer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
+ * Matcher to use when you need to do custom PKIX path validation.
+ *
  * See http://java.sun.com/javase/6/docs/technotes/guides/security/certpath/CertPathProgGuide.html for reference
  * and http://stackoverflow.com/questions/2457795/x-509-certificate-validation-with-java-and-bouncycastle/2458343
  * for a quick example using Sun API.
@@ -39,22 +35,24 @@ import org.slf4j.LoggerFactory;
  * implemented when needed.
  */
 public class X509CredentialsPKIXPathMatcher
-        implements CredentialsMatcher
+        extends AbstractX509CredentialsMatcher
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( X509CredentialsPKIXPathMatcher.class );
+    static {
+        if ( Security.getProvider( BouncyCastleProvider.PROVIDER_NAME ) == null ) {
+            Security.addProvider( new BouncyCastleProvider() );
+            LOGGER.warn( "BouncyCastle Provider was not registered, forced registration. That's certainly something you wanna do yourself." );
+        }
+    }
 
     @Override
-    public boolean doCredentialsMatch( AuthenticationToken token, AuthenticationInfo info )
+    public boolean doX509CredentialsMatch( X509AuthenticationToken token, X509AuthenticationInfo info )
     {
         try {
 
-            X509AuthenticationToken x509AuthToken = ( X509AuthenticationToken ) token;
-            X509AuthenticationInfo x509AuthInfo = ( X509AuthenticationInfo ) info;
-
-            ExtendedPKIXBuilderParameters params = new ExtendedPKIXBuilderParameters( x509AuthInfo.getGrantedTrustAnchors(),
-                                                                                      x509AuthToken.getClientX509CertSelector() );
-            params.addStore( x509AuthToken.getClientCertChainStore() );
+            ExtendedPKIXBuilderParameters params = new ExtendedPKIXBuilderParameters( info.getGrantedTrustAnchors(),
+                                                                                      token.getX509CertSelector() );
+            params.addStore( token.getX509CertChainStore() );
             params.setRevocationEnabled( false );
 
             CertPathBuilder pathBuilder = CertPathBuilder.getInstance( "PKIX", BouncyCastleProvider.PROVIDER_NAME );
@@ -65,9 +63,9 @@ public class X509CredentialsPKIXPathMatcher
                 String certPathEnd = ( ( X509Certificate ) reviewer.getCertPath().getCertificates().get( reviewer.getCertPathSize() - 1 ) ).getSubjectX500Principal().getName();
                 LOGGER.debug( "A valid ({}) certification path (length: {}) was found for the following certificate: '{}' ending on: '{}'",
                               new Object[]{ reviewer.isValidCertPath(),
-                                            reviewer.getCertPathSize(),
-                                            x509AuthToken.getClientX509Certificate().getSubjectX500Principal().getName(),
-                                            certPathEnd } );
+                            reviewer.getCertPathSize(),
+                            token.getX509Certificate().getSubjectX500Principal().getName(),
+                            certPathEnd } );
             }
 
             return true;
@@ -79,6 +77,7 @@ public class X509CredentialsPKIXPathMatcher
             LOGGER.trace( "Unable to do credentials matching", ex );
             return false;
         }
+
     }
 
 }

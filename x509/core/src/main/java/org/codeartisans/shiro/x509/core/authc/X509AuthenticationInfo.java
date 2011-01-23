@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Paul Merlin. All Rights Reserved.
+ * Copyright (c) 2011, Paul Merlin. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;
 import java.util.HashSet;
 import java.util.Set;
+import javax.security.auth.x500.X500Principal;
 
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 
@@ -25,19 +26,69 @@ public class X509AuthenticationInfo
 {
 
     private static final long serialVersionUID = 1L;
-    private final Set<X509Certificate> grantedIssuers;
-    private final X509Certificate subjectCertificate;
 
-    public X509AuthenticationInfo( String principal, X509Certificate clientCert, Set<X509Certificate> grantedIssuers, String realmName )
+    private final X509Certificate clientCertificate;
+
+    private final Set<X509Certificate> grantedIssuers = new HashSet<X509Certificate>();
+
+    private final X500Principal subjectDN;
+
+    private final X500Principal issuerDN;
+
+    private final String serialNumber;
+
+    public X509AuthenticationInfo( String principal, X509Certificate clientCertificate, Set<X509Certificate> grantedIssuers, String realmName )
     {
         super( principal, null, realmName );
-        this.subjectCertificate = clientCert;
-        this.grantedIssuers = grantedIssuers;
+        this.clientCertificate = clientCertificate;
+        if ( clientCertificate != null ) {
+            this.subjectDN = clientCertificate.getSubjectX500Principal();
+            this.issuerDN = clientCertificate.getIssuerX500Principal();
+            this.serialNumber = clientCertificate.getSerialNumber().toString( 16 );
+        } else {
+            this.subjectDN = null;
+            this.issuerDN = null;
+            this.serialNumber = null;
+        }
+        this.grantedIssuers.addAll( grantedIssuers );
     }
 
-    public X509Certificate getSubjectCertificate()
+    public X509AuthenticationInfo( String principal, X500Principal issuerDN, String serialNumber, String realmName )
     {
-        return subjectCertificate;
+        super( principal, null, realmName );
+        this.clientCertificate = null;
+        this.subjectDN = null;
+        this.issuerDN = issuerDN;
+        this.serialNumber = serialNumber;
+    }
+
+    public X509AuthenticationInfo( String principal, X500Principal subjectDN, String realmName )
+    {
+        super( principal, null, realmName );
+        this.clientCertificate = null;
+        this.subjectDN = subjectDN;
+        this.issuerDN = null;
+        this.serialNumber = null;
+    }
+
+    public X509Certificate getX509Certificate()
+    {
+        return clientCertificate;
+    }
+
+    public X500Principal getSubjectDN()
+    {
+        return subjectDN;
+    }
+
+    public X500Principal getIssuerDN()
+    {
+        return issuerDN;
+    }
+
+    public String getHexSerialNumber()
+    {
+        return serialNumber;
     }
 
     public Set<TrustAnchor> getGrantedTrustAnchors()

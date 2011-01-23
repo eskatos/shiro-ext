@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, Paul Merlin. All Rights Reserved.
+ * Copyright (c) 2011, Paul Merlin. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@ package org.codeartisans.shiro.x509.core.authc;
 import java.security.NoSuchProviderException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+import javax.security.auth.x500.X500Principal;
 
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.HostAuthenticationToken;
@@ -31,34 +32,58 @@ public class X509AuthenticationToken
 {
 
     private static final long serialVersionUID = 1L;
-    private final X509Certificate[] clientX509CertChain;
+
+    private final X509Certificate certificate;
+
+    private final X509Certificate[] certChain;
+
+    private final X500Principal subjectDN;
+
+    private final X500Principal issuerDN;
+
+    private final String hexSerialNumber;
+
     private final String host;
 
-    public X509AuthenticationToken( X509Certificate[] clientX509CertChain, String host )
+    public X509AuthenticationToken( X509Certificate[] clientCertChain, String host )
     {
-        this.clientX509CertChain = clientX509CertChain;
+        if ( clientCertChain == null || clientCertChain.length < 1 ) {
+            throw new IllegalArgumentException( "No certificate in the chain" );
+        }
+        this.certChain = clientCertChain;
+        this.certificate = this.certChain[0];
+        this.subjectDN = certificate.getSubjectX500Principal();
+        this.issuerDN = certificate.getIssuerX500Principal();
+        this.hexSerialNumber = certificate.getSerialNumber().toString( 16 );
         this.host = host;
     }
 
-    public X509Certificate getClientX509Certificate()
+    public X509AuthenticationToken( X500Principal clientSubjectDN, X500Principal clientIssuerDN, String clientHexSerialNumber, String host )
     {
-        if ( clientX509CertChain == null || clientX509CertChain.length < 1 ) {
-            return null;
-        }
-        return clientX509CertChain[0];
+        this.certificate = null;
+        this.certChain = new X509Certificate[]{};
+        this.subjectDN = clientSubjectDN;
+        this.issuerDN = clientIssuerDN;
+        this.hexSerialNumber = clientHexSerialNumber;
+        this.host = host;
     }
 
-    public X509CertStoreSelector getClientX509CertSelector()
+    public X509Certificate getX509Certificate()
+    {
+        return certificate;
+    }
+
+    public X509CertStoreSelector getX509CertSelector()
     {
         X509CertStoreSelector certSelector = new X509CertStoreSelector();
-        certSelector.setCertificate( getClientX509Certificate() );
+        certSelector.setCertificate( certificate );
         return certSelector;
     }
 
-    public X509Store getClientCertChainStore()
+    public X509Store getX509CertChainStore()
     {
         try {
-            X509CollectionStoreParameters params = new X509CollectionStoreParameters( Arrays.asList( clientX509CertChain ) );
+            X509CollectionStoreParameters params = new X509CollectionStoreParameters( Arrays.asList( certChain ) );
             return X509Store.getInstance( "CERTIFICATE/COLLECTION", params, BouncyCastleProvider.PROVIDER_NAME );
         } catch ( NoSuchStoreException ex ) {
             return null;
@@ -67,21 +92,31 @@ public class X509AuthenticationToken
         }
     }
 
+    public X500Principal getSubjectDN()
+    {
+        return subjectDN;
+    }
+
+    public X500Principal getIssuerDN()
+    {
+        return issuerDN;
+    }
+
+    public String getHexSerialNumber()
+    {
+        return hexSerialNumber;
+    }
+
     @Override
     public Object getPrincipal()
     {
-        X509Certificate clientCert = getClientX509Certificate();
-        if ( clientCert == null ) {
-            return null;
-        }
-        return clientCert.getSubjectX500Principal();
+        return subjectDN;
     }
 
-    @SuppressWarnings( "ReturnOfCollectionOrArrayField" )
     @Override
     public Object getCredentials()
     {
-        return clientX509CertChain;
+        return null;
     }
 
     @Override
