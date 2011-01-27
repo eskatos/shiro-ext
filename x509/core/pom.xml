@@ -16,12 +16,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>${groupId}</groupId>
-            <artifactId>shiro-ext-base</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
             <version>${version.bouncy}</version>
