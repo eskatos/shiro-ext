@@ -4,7 +4,10 @@ Apache Shiro Extensions
 
 This project contains [Apache Shiro](http://shiro.apache.org/ "Apache Shiro") extensions.
 
-    "Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management. With Shiro’s easy-to-understand API, you can quickly and easily secure any application – from the smallest mobile applications to the largest web and enterprise applications."
+    "Apache Shiro is a powerful and easy-to-use Java security framework that performs
+     authentication, authorization, cryptography, and session management. With Shiro’s
+     easy-to-understand API, you can quickly and easily secure any application – from
+     the smallest mobile applications to the largest web and enterprise applications."
 
 For now only x509 related extensions are available.
 
@@ -28,27 +31,19 @@ The following credential matchers are provided:
 
 - X509CredentialsPKIXPathMatcher
 
-    Custom PKIX path validation based on granted trust anchors provided by your Realm.
-
-    Works for direct X509 authentication and with forwarded X509 authentication only if the full client certificate is available.
+    Custom PKIX path validation based on granted trust anchors provided by your Realm. Works for direct X509 authentication and with forwarded X509 authentication only if the full client certificate is available.
 
 - X509CredentialsSha256Matcher
 
-    Compute the Sha256 hashes of the client certificate and the one provided by your Realm and compare them.
-
-    Works for direct X509 authentication and with forwarded X509 authentication only if the full client certificate is available.
+    Compute the Sha256 hashes of the client certificate and the one provided by your Realm and compare them. Works for direct X509 authentication and with forwarded X509 authentication only if the full client certificate is available.
 
 - X509CredentialsIssuerDNSNMatcher
 
-    Compare issuer distinguished name and serial number of the client certificate against info provided by your Realm.
-
-    Works in both X509 authentication modes, usefull if your Realm can not access the full certificate.
+    Compare issuer distinguished name and serial number of the client certificate against info provided by your Realm. Works in both X509 authentication modes, usefull if your Realm can not access the full certificate.
 
 - X509CredentialsSujbectDNMatcher
 
-    Compare subject distinguished name of the client certificate against info provided by your Realm.
-
-    Works in both X509 authentication modes, usefull if your Realm can not access the full certificate.
+    Compare subject distinguished name of the client certificate against info provided by your Realm. Works in both X509 authentication modes, usefull if your Realm can not access the full certificate.
 
 
 
