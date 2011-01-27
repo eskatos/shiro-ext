@@ -39,7 +39,6 @@
         <version.slf4j>1.6.1</version.slf4j>
         <version.shiro>1.1.0</version.shiro>
         <version.bouncy>1.45</version.bouncy>
-        <version.jodatime>1.6.2</version.jodatime>
     </properties>
 
     <developers>

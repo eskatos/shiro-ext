@@ -17,8 +17,9 @@ X509
 
 This extension is splitted in two jars :
 
-- shiro-ext-x509-core
-- shiro-ext-x509-web
+- shiro-ext-x509-core that depends on [slf4j-api](http://www.slf4j.org/), [bouncycastle](http://www.bouncycastle.org/) provider and shiro-c
+ore,
+- shiro-ext-x509-web that depends on shiro-ext-x509-core and shiro-web.
 
 You certainly want to depend on the -web artifact.
 
