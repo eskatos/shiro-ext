@@ -21,7 +21,8 @@ This extension is splitted in two jars :
 ore,
 - shiro-ext-x509-web that depends on shiro-ext-x509-core and shiro-web.
 
-You certainly want to depend on the -web artifact.
+You certainly want to depend on the -web artifact. The project is hosted in maven central.
+[here](http://mavencentral.sonatype.com/#search|ga|1|shiro-ext-x509-web) you'll find a quick copy/paste for the dependency.
 
 Be sure to read about X509 certificates before choosing an authentication strategy.
 
