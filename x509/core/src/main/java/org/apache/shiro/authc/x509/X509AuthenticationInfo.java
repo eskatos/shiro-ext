@@ -11,7 +11,7 @@
  * limitations under the License.
  *
  */
-package org.codeartisans.shiro.x509.core.authc;
+package org.apache.shiro.authc.x509;
 
 import java.security.cert.TrustAnchor;
 import java.security.cert.X509Certificate;

@@ -11,15 +11,13 @@
  * limitations under the License.
  *
  */
-package org.codeartisans.shiro.x509.core.authc;
+package org.apache.shiro.authc.x509;
 
 import javax.security.auth.x500.X500Principal;
 
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
-
-import org.codeartisans.shiro.x509.ShiroExtX509;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +26,7 @@ public abstract class AbstractX509CredentialsMatcher
         implements CredentialsMatcher
 {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger( ShiroExtX509.class );
+    protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractX509CredentialsMatcher.class );
 
     @Override
     public final boolean doCredentialsMatch( AuthenticationToken token, AuthenticationInfo info )

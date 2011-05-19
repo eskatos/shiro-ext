@@ -11,11 +11,18 @@
  * limitations under the License.
  *
  */
-package org.codeartisans.shiro.x509.web.filter.authc;
+package org.apache.shiro.web.filter.authc;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.security.auth.x500.X500Principal;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -23,13 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.x509.X509AuthenticationToken;
 import org.apache.shiro.codec.Hex;
-import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
-
-import org.bouncycastle.openssl.PEMReader;
-
-import org.codeartisans.shiro.x509.ShiroExtX509;
-import org.codeartisans.shiro.x509.core.authc.X509AuthenticationToken;
+import org.apache.shiro.codec.Base64;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +52,7 @@ public class ForwardedX509AuthenticationFilter
         extends AuthenticatingFilter
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( ShiroExtX509.LOGGER_NAME );
+    private static final Logger LOGGER = LoggerFactory.getLogger( ForwardedX509AuthenticationFilter.class );
     private static final String SSL_CLIENT_VERIFY = "X-SSL-Client-Verify";
     private static final String SSL_CLIENT_CERT = "X-SSL-Client-Cert";
     private static final String SSL_CLIENT_S_DN = "X-SSL-Client-S-DN";
@@ -89,18 +92,18 @@ public class ForwardedX509AuthenticationFilter
 
         if ( useCertificate ) {
 
-            X509Certificate certificate = null;
+            X509Certificate[] certificateChain = null;
 
             String certHeader = httpRequest.getHeader( SSL_CLIENT_CERT );
             if ( notEmpty( certHeader ) ) {
-                certificate = readX509CertificateFromPEM( certHeader );
+                certificateChain = readX509CertificateChainFromPEM( rebuildPEMBundleFromHttpHeader( certHeader ) );
             }
 
-            if ( certificate == null ) {
+            if ( certificateChain == null ) {
                 throw new AuthenticationException( "Set up to use " + SSL_CLIENT_CERT + " header but it was either empty or unparseable" );
             }
 
-            return new X509AuthenticationToken( new X509Certificate[]{ certificate }, getHost( request ) );
+            return new X509AuthenticationToken( certificateChain, getHost( request ) );
 
         }
 
@@ -146,13 +149,93 @@ public class ForwardedX509AuthenticationFilter
         return str != null && str.length() > 1;
     }
 
-    private X509Certificate readX509CertificateFromPEM( String pem )
+    private static final String PEM_BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
+    private static final String PEM_END_CERT = "-----END CERTIFICATE-----";
+    private static final String TEMP_BEGIN_CERT = "-----BEGIN_CERTIFICATE-----";
+    private static final String TEMP_END_CERT = "-----END_CERTIFICATE-----";
+
+    private String rebuildPEMBundleFromHttpHeader( String httpHeaderValue )
+    {
+        httpHeaderValue = httpHeaderValue.replaceAll( PEM_BEGIN_CERT, TEMP_BEGIN_CERT );
+        httpHeaderValue = httpHeaderValue.replaceAll( PEM_END_CERT, TEMP_END_CERT );
+        httpHeaderValue = httpHeaderValue.replaceAll( "\\s", "\n" );
+        httpHeaderValue = httpHeaderValue.replaceAll( TEMP_BEGIN_CERT, PEM_BEGIN_CERT );
+        httpHeaderValue = httpHeaderValue.replaceAll( TEMP_END_CERT, PEM_END_CERT );
+        return httpHeaderValue;
+    }
+
+    private X509Certificate[] readX509CertificateChainFromPEM( String pem )
     {
         try {
-            return ( X509Certificate ) new PEMReader( new StringReader( pem ) ).readObject();
+            List<X509Certificate> pemBundle = loadPEMBundle( new StringReader( pem ) );
+            if ( pemBundle.isEmpty() ) {
+                return null;
+            }
+            return pemBundle.toArray( new X509Certificate[ pemBundle.size() ] );
+        } catch ( CertificateException ex ) {
+            LOGGER.warn( "Unparseable PEM X509Certificate, will use null and continue. Here is the PEM:\n{}", pem, ex );
+            return null;
         } catch ( IOException ex ) {
             LOGGER.warn( "Unparseable PEM X509Certificate, will use null and continue. Here is the PEM:\n{}", pem, ex );
             return null;
+        }
+    }
+
+    private static final String PEM_BEGIN = "-----BEGIN";
+    private static final String PEM_END = "-----END";
+
+    private static List<X509Certificate> loadPEMBundle( final Reader pemBundleReader )
+            throws IOException, CertificateException
+    {
+        BufferedReader br = null;
+        final String malformed = "Malformed PEM X.509 Certificate Bundle";
+        try {
+            br = new BufferedReader( pemBundleReader );
+            String line = br.readLine();
+            if ( !line.startsWith( PEM_BEGIN ) ) {
+                throw new CertificateException( malformed );
+            }
+            final List<X509Certificate> certList = new ArrayList<X509Certificate>();
+            boolean begin = false;
+            boolean end = true;
+            StringBuilder x509Base64 = new StringBuilder();
+            CertificateFactory certFactory = CertificateFactory.getInstance( "X.509" );
+            while ( line != null ) {
+                if ( line.length() > 0 ) {
+                    if ( line.startsWith( PEM_BEGIN ) ) {
+                        if ( !begin && end ) {
+                            begin = true;
+                            end = false;
+                            x509Base64 = new StringBuilder();
+                        } else {
+                            throw new CertificateException( malformed );
+                        }
+                    } else if ( line.startsWith( PEM_END ) ) {
+                        if ( begin || !end ) {
+                            begin = false;
+                            end = true;
+                            byte[] base64DecodedCert = Base64.decode( x509Base64.toString() );
+                            certList.add( ( X509Certificate ) certFactory.generateCertificate( new ByteArrayInputStream( base64DecodedCert ) ) );
+                        } else {
+                            throw new CertificateException( malformed );
+                        }
+                    } else if ( begin && !end ) {
+                        x509Base64.append( line );
+                    }
+                }
+                line = br.readLine();
+            }
+            if ( begin || !end ) {
+                throw new CertificateException( malformed );
+            }
+            return certList;
+        } finally {
+            if ( br != null ) {
+                try {
+                    br.close();
+                } catch ( IOException ignored ) {
+                }
+            }
         }
     }
 

@@ -11,7 +11,7 @@
  * limitations under the License.
  *
  */
-package org.codeartisans.shiro.x509.web.filter.authc;
+package org.apache.shiro.web.filter.authc;
 
 import java.security.cert.X509Certificate;
 import javax.servlet.ServletRequest;
@@ -19,10 +19,8 @@ import javax.servlet.ServletResponse;
 
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
 
-import org.codeartisans.shiro.x509.ShiroExtX509;
-import org.codeartisans.shiro.x509.core.authc.X509AuthenticationToken;
+import org.apache.shiro.authc.x509.X509AuthenticationToken;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +29,7 @@ public class X509AuthenticationFilter
         extends AuthenticatingFilter
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( ShiroExtX509.LOGGER_NAME );
+    private static final Logger LOGGER = LoggerFactory.getLogger( X509AuthenticationFilter.class );
 
     @Override
     protected boolean onAccessDenied( ServletRequest request, ServletResponse response )
