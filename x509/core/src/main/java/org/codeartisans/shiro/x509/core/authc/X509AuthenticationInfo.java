@@ -26,18 +26,13 @@ public class X509AuthenticationInfo
 {
 
     private static final long serialVersionUID = 1L;
-
     private final X509Certificate clientCertificate;
-
     private final Set<X509Certificate> grantedIssuers = new HashSet<X509Certificate>();
-
     private final X500Principal subjectDN;
-
     private final X500Principal issuerDN;
-
     private final String serialNumber;
 
-    public X509AuthenticationInfo( String principal, X509Certificate clientCertificate, Set<X509Certificate> grantedIssuers, String realmName )
+    public X509AuthenticationInfo( Object principal, X509Certificate clientCertificate, Set<X509Certificate> grantedIssuers, String realmName )
     {
         super( principal, null, realmName );
         this.clientCertificate = clientCertificate;
@@ -53,7 +48,7 @@ public class X509AuthenticationInfo
         this.grantedIssuers.addAll( grantedIssuers );
     }
 
-    public X509AuthenticationInfo( String principal, X500Principal issuerDN, String serialNumber, String realmName )
+    public X509AuthenticationInfo( Object principal, X500Principal issuerDN, String serialNumber, String realmName )
     {
         super( principal, null, realmName );
         this.clientCertificate = null;
@@ -62,7 +57,7 @@ public class X509AuthenticationInfo
         this.serialNumber = serialNumber;
     }
 
-    public X509AuthenticationInfo( String principal, X500Principal subjectDN, String realmName )
+    public X509AuthenticationInfo( Object principal, X500Principal subjectDN, String realmName )
     {
         super( principal, null, realmName );
         this.clientCertificate = null;

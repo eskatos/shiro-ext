@@ -63,9 +63,9 @@ public class X509CredentialsPKIXPathMatcher
                 String certPathEnd = ( ( X509Certificate ) reviewer.getCertPath().getCertificates().get( reviewer.getCertPathSize() - 1 ) ).getSubjectX500Principal().getName();
                 LOGGER.debug( "A valid ({}) certification path (length: {}) was found for the following certificate: '{}' ending on: '{}'",
                               new Object[]{ reviewer.isValidCertPath(),
-                            reviewer.getCertPathSize(),
-                            token.getX509Certificate().getSubjectX500Principal().getName(),
-                            certPathEnd } );
+                                            reviewer.getCertPathSize(),
+                                            token.getX509Certificate().getSubjectX500Principal().getName(),
+                                            certPathEnd } );
             }
 
             return true;

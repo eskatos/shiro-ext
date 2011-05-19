@@ -50,23 +50,14 @@ public class ForwardedX509AuthenticationFilter
 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger( ShiroExtX509.LOGGER_NAME );
-
     private static final String SSL_CLIENT_VERIFY = "X-SSL-Client-Verify";
-
     private static final String SSL_CLIENT_CERT = "X-SSL-Client-Cert";
-
     private static final String SSL_CLIENT_S_DN = "X-SSL-Client-S-DN";
-
     private static final String SSL_CLIENT_I_DN = "X-SSL-Client-I-DN";
-
     private static final String SSL_CLIENT_M_SERIAL = "X-SSL-Client-M-Serial";
-
     private boolean useCertificate = false;
-
     private boolean useSubjectDN = false;
-
     private boolean useIssuerDN = false;
-
     private boolean useSerialNumber = false;
 
     @Override

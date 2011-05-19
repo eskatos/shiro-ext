@@ -21,7 +21,7 @@ public class X509CredentialsIssuerDNSNMatcher
     public boolean doX509CredentialsMatch( X509AuthenticationToken token, X509AuthenticationInfo info )
     {
         boolean match = token.getHexSerialNumber().equals( info.getHexSerialNumber() )
-                && doEquals( token.getIssuerDN(), info.getIssuerDN() );
+                        && doEquals( token.getIssuerDN(), info.getIssuerDN() );
 
         if ( match ) {
             LOGGER.trace( "Client IssuerDN and Serial Number match the ones provided by the Realm, will return true" );

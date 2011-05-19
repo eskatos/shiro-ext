@@ -32,17 +32,11 @@ public class X509AuthenticationToken
 {
 
     private static final long serialVersionUID = 1L;
-
     private final X509Certificate certificate;
-
     private final X509Certificate[] certChain;
-
     private final X500Principal subjectDN;
-
     private final X500Principal issuerDN;
-
     private final String hexSerialNumber;
-
     private final String host;
 
     public X509AuthenticationToken( X509Certificate[] clientCertChain, String host )
