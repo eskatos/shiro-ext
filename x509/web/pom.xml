@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.codeartisans.shiro</groupId>
         <artifactId>shiro-ext-x509</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <artifactId>shiro-ext-x509-web</artifactId>
