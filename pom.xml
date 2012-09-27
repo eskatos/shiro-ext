@@ -37,7 +37,7 @@
 
     <properties>
         <version.slf4j>1.6.1</version.slf4j>
-        <version.shiro>1.1.0</version.shiro>
+        <version.shiro>1.2.1</version.shiro>
         <version.bouncy>1.45</version.bouncy>
     </properties>
 
