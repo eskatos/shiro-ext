@@ -36,7 +36,7 @@
     </modules>
 
     <properties>
-        <version.slf4j>1.6.1</version.slf4j>
+        <version.slf4j>1.7.1</version.slf4j>
         <version.shiro>1.2.1</version.shiro>
         <version.bouncy>1.45</version.bouncy>
     </properties>
