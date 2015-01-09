@@ -2,6 +2,8 @@
 Apache Shiro Extensions
 =======================
 
+[![Build Status](https://travis-ci.org/eskatos/shiro-ext.svg)](https://travis-ci.org/eskatos/shiro-ext)
+
 This project contains [Apache Shiro](http://shiro.apache.org/ "Apache Shiro") extensions.
 
     "Apache Shiro is a powerful and easy-to-use Java security framework that performs
