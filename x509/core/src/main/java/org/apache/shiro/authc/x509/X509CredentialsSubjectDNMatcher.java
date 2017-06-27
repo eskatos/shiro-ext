@@ -13,7 +13,7 @@
  */
 package org.apache.shiro.authc.x509;
 
-public class X509CredentialsSujbectDNMatcher
+public class X509CredentialsSubjectDNMatcher
         extends AbstractX509CredentialsMatcher
 {
 
