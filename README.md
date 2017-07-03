@@ -65,7 +65,7 @@ You will need to implement a Realm extending AbstractX509Realm and use it in you
 Use the following filter in your Shiro configuration:
 
     [main]
-    x509 = org.codeartisans.shiro.x509.web.filter.authc.X509AuthenticationFilter
+    x509 = org.apache.shiro.web.filter.authc.X509AuthenticationFilter
 
     [urls]
     /protected = x509
@@ -93,7 +93,7 @@ Here are three Shiro configuration snippets for the different CredentialMatchers
 For X509CredentialsPKIXPathMatcher or X509CredentialsSha256Matcher:
 
     [main]
-    x509 = org.codeartisans.shiro.x509.web.filter.authc.ForwardedX509AuthenticationFilter
+    x509 = org.apache.shiro.web.filter.authc.ForwardedX509AuthenticationFilter
     x509.useCertificate = true
 
     [urls]
@@ -103,7 +103,7 @@ For X509CredentialsPKIXPathMatcher or X509CredentialsSha256Matcher:
 For X509CredentialsIssuerDNSNMatcher:
 
     [main]
-    x509 = org.codeartisans.shiro.x509.web.filter.authc.ForwardedX509AuthenticationFilter
+    x509 = org.apache.shiro.web.filter.authc.ForwardedX509AuthenticationFilter
     x509.useIssuerDN = true
     x509.useSerialNumber = true
 
@@ -114,7 +114,7 @@ For X509CredentialsIssuerDNSNMatcher:
 For X509CredentialsSujbectDNMatcher:
 
     [main]
-    x509 = org.codeartisans.shiro.x509.web.filter.authc.ForwardedX509AuthenticationFilter
+    x509 = org.apache.shiro.web.filter.authc.ForwardedX509AuthenticationFilter
     x509.useSubjectDN = true
 
     [urls]
