@@ -1,0 +1,8 @@
+
+rootProject.name = 'shiro-ext'
+
+include ':shiro-ext-x509-core'
+include ':shiro-ext-x509-web'
+
+project(':shiro-ext-x509-core').projectDir = "$rootDir/x509/core" as File
+project(':shiro-ext-x509-web').projectDir = "$rootDir/x509/web" as File

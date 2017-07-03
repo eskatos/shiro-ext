@@ -1,4 +1,5 @@
-target
-x509/target
-x509/web/target
-x509/core/target
+build
+.gradle
+.idea
+*.iml
+
