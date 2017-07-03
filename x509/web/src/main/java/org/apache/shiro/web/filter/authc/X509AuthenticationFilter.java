@@ -14,6 +14,7 @@
 package org.apache.shiro.web.filter.authc;
 
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
@@ -43,7 +44,10 @@ public class X509AuthenticationFilter
             throws Exception
     {
         X509Certificate[] clientCertChain = ( X509Certificate[] ) request.getAttribute( "javax.servlet.request.X509Certificate" );
-        LOGGER.info( "X509AuthFilter.createToken() cert chain is {}", clientCertChain );
+        if( LOGGER.isDebugEnabled() )
+        {
+            LOGGER.debug( "X509AuthFilter.createToken() cert chain is {}", Arrays.toString( clientCertChain ) );
+        }
         if ( clientCertChain == null || clientCertChain.length < 1 ) {
             throw new ShiroException( "Request do not contain any X509Certificate" );
         }
