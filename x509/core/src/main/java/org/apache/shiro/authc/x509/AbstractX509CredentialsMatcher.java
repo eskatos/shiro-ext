@@ -19,14 +19,9 @@ import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public abstract class AbstractX509CredentialsMatcher
         implements CredentialsMatcher
 {
-
-    protected static final Logger LOGGER = LoggerFactory.getLogger( AbstractX509CredentialsMatcher.class );
 
     @Override
     public final boolean doCredentialsMatch( AuthenticationToken token, AuthenticationInfo info )

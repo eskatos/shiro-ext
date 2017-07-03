@@ -13,9 +13,14 @@
  */
 package org.apache.shiro.authc.x509;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class X509CredentialsIssuerDNSNMatcher
         extends AbstractX509CredentialsMatcher
 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger( X509CredentialsIssuerDNSNMatcher.class );
 
     @Override
     public boolean doX509CredentialsMatch( X509AuthenticationToken token, X509AuthenticationInfo info )

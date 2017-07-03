@@ -23,6 +23,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.x509.CertPathReviewerException;
 import org.bouncycastle.x509.ExtendedPKIXBuilderParameters;
 import org.bouncycastle.x509.PKIXCertPathReviewer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Matcher to use when you need to do custom PKIX path validation.
@@ -37,6 +39,8 @@ import org.bouncycastle.x509.PKIXCertPathReviewer;
 public class X509CredentialsPKIXPathMatcher
         extends AbstractX509CredentialsMatcher
 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger( X509CredentialsPKIXPathMatcher.class );
 
     static {
         if ( Security.getProvider( BouncyCastleProvider.PROVIDER_NAME ) == null ) {

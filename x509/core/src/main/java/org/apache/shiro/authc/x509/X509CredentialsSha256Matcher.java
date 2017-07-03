@@ -16,10 +16,14 @@ package org.apache.shiro.authc.x509;
 import java.security.cert.CertificateEncodingException;
 
 import org.apache.shiro.crypto.hash.Sha256Hash;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class X509CredentialsSha256Matcher
         extends AbstractX509CredentialsMatcher
 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger( X509CredentialsSha256Matcher.class );
 
     @Override
     public boolean doX509CredentialsMatch( X509AuthenticationToken token, X509AuthenticationInfo info )
