@@ -11,7 +11,7 @@
  * limitations under the License.
  *
  */
-package org.apache.shiro.web.filter.authc;
+package org.codeartisans.shiro.web.filter.authc;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -30,9 +30,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.x509.X509AuthenticationToken;
 import org.apache.shiro.codec.Hex;
 import org.apache.shiro.codec.Base64;
+
+import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+
+import org.codeartisans.shiro.authc.x509.X509AuthenticationToken;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

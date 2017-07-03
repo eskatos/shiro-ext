@@ -11,15 +11,15 @@
  * limitations under the License.
  *
  */
-package org.apache.shiro.realm.x509;
+package org.codeartisans.shiro.realm.x509;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.realm.AuthorizingRealm;
 
-import org.apache.shiro.authc.x509.X509AuthenticationInfo;
-import org.apache.shiro.authc.x509.X509AuthenticationToken;
+import org.codeartisans.shiro.authc.x509.X509AuthenticationInfo;
+import org.codeartisans.shiro.authc.x509.X509AuthenticationToken;
 
 public abstract class AbstractX509Realm
         extends AuthorizingRealm
@@ -29,7 +29,7 @@ public abstract class AbstractX509Realm
     protected AuthenticationInfo doGetAuthenticationInfo( AuthenticationToken token )
             throws AuthenticationException
     {
-        return doGetX509AuthenticationInfo( ( X509AuthenticationToken ) token );
+        return doGetX509AuthenticationInfo( (X509AuthenticationToken) token );
     }
 
     protected abstract X509AuthenticationInfo doGetX509AuthenticationInfo( X509AuthenticationToken x509AuthenticationToken );

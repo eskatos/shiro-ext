@@ -11,28 +11,27 @@
  * limitations under the License.
  *
  */
-package org.apache.shiro.authc.x509;
+package org.codeartisans.shiro.authc.x509;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class X509CredentialsIssuerDNSNMatcher
+public class X509CredentialsSubjectDNMatcher
         extends AbstractX509CredentialsMatcher
 {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger( X509CredentialsIssuerDNSNMatcher.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger( X509CredentialsSubjectDNMatcher.class );
 
     @Override
     public boolean doX509CredentialsMatch( X509AuthenticationToken token, X509AuthenticationInfo info )
     {
-        boolean match = token.getHexSerialNumber().equals( info.getHexSerialNumber() )
-                        && doEquals( token.getIssuerDN(), info.getIssuerDN() );
+        boolean match = doEquals( token.getSubjectDN(), info.getIssuerDN() );
 
         if ( match ) {
-            LOGGER.trace( "Client IssuerDN and Serial Number match the ones provided by the Realm, will return true" );
+            LOGGER.trace( "Client SubjectDN match the one provided by the Realm, will return true" );
         } else if ( LOGGER.isTraceEnabled() ) {
-            LOGGER.trace( "Client IssuerDN ({}) or Serial Number ({}) do not match the one provided by the Realm ({} / {}), will return false",
-                          new Object[]{ toString( token.getIssuerDN() ), token.getHexSerialNumber(), toString( info.getIssuerDN() ), info.getHexSerialNumber() } );
+            LOGGER.trace( "Client SubjectDN ({}) do not match the one provided by the Realm ({}), will return false",
+                          toString( token.getSubjectDN() ), toString( info.getIssuerDN() ) );
         }
 
         return match;

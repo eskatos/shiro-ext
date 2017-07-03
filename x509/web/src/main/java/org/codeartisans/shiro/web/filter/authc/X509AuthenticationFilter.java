@@ -11,7 +11,7 @@
  * limitations under the License.
  *
  */
-package org.apache.shiro.web.filter.authc;
+package org.codeartisans.shiro.web.filter.authc;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -21,7 +21,9 @@ import javax.servlet.ServletResponse;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationToken;
 
-import org.apache.shiro.authc.x509.X509AuthenticationToken;
+import org.apache.shiro.web.filter.authc.AuthenticatingFilter;
+
+import org.codeartisans.shiro.authc.x509.X509AuthenticationToken;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

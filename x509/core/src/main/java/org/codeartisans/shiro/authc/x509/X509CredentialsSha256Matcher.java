@@ -11,11 +11,12 @@
  * limitations under the License.
  *
  */
-package org.apache.shiro.authc.x509;
+package org.codeartisans.shiro.authc.x509;
 
 import java.security.cert.CertificateEncodingException;
 
 import org.apache.shiro.crypto.hash.Sha256Hash;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
