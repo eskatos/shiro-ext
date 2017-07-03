@@ -16,12 +16,12 @@ tasks.withType(JavaCompile::class.java) {
 }
 
 dependencies {
-    "api"("org.apache.shiro:shiro-core:1.2.1")
+    "api"("org.apache.shiro:shiro-core:1.4.0")
 
-    implementation("org.bouncycastle:bcprov-jdk16:1.45")
-    implementation("org.slf4j:slf4j-api:1.7.1")
+    implementation("org.bouncycastle:bcprov-jdk16:1.46")
+    implementation("org.slf4j:slf4j-api:1.7.25")
 
-    testImplementation("junit:junit:4.7")
+    testImplementation("junit:junit:4.12")
 }
 
 repositories {

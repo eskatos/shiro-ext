@@ -19,9 +19,9 @@ dependencies {
     compileOnly("javax.servlet:servlet-api:2.5")
 
     "api"(project(":shiro-ext-x509-core"))
-    "api"("org.apache.shiro:shiro-web:1.2.1")
+    "api"("org.apache.shiro:shiro-web:1.4.0")
 
-    testImplementation("junit:junit:4.7")
+    testImplementation("junit:junit:4.12")
 }
 
 repositories {
