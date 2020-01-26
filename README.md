@@ -2,7 +2,7 @@
 Apache Shiro Extensions
 =======================
 
-[![Build Status](https://travis-ci.org/eskatos/shiro-ext.svg)](https://travis-ci.org/eskatos/shiro-ext)
+![CI](https://github.com/eskatos/shiro-ext/workflows/CI/badge.svg?event=push)
 
 This project contains [Apache Shiro](http://shiro.apache.org/ "Apache Shiro") extensions.
 
