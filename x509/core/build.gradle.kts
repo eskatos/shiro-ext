@@ -11,7 +11,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_6
 }
 
-tasks.withType(JavaCompile::class.java) {
+tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }
 
