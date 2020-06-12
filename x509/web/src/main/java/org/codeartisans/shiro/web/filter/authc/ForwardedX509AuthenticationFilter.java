@@ -75,7 +75,6 @@ public class ForwardedX509AuthenticationFilter
 
     @Override
     protected AuthenticationToken createToken( ServletRequest request, ServletResponse response )
-            throws Exception
     {
         HttpServletRequest httpRequest = ( HttpServletRequest ) request;
 

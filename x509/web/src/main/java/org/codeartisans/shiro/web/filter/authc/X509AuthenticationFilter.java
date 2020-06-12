@@ -43,7 +43,6 @@ public class X509AuthenticationFilter
 
     @Override
     protected AuthenticationToken createToken( ServletRequest request, ServletResponse response )
-            throws Exception
     {
         X509Certificate[] clientCertChain = ( X509Certificate[] ) request.getAttribute( "javax.servlet.request.X509Certificate" );
         if( LOGGER.isDebugEnabled() )
