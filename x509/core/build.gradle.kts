@@ -16,7 +16,7 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 dependencies {
-    "api"("org.apache.shiro:shiro-core:1.4.2")
+    api("org.apache.shiro:shiro-core:1.4.2")
 
     implementation("org.bouncycastle:bcprov-jdk16:1.46")
     implementation("org.slf4j:slf4j-api:1.7.29")

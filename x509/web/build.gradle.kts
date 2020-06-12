@@ -18,8 +18,8 @@ tasks.withType<JavaCompile>().configureEach {
 dependencies {
     compileOnly("javax.servlet:servlet-api:2.5")
 
-    "api"(project(":shiro-ext-x509-core"))
-    "api"("org.apache.shiro:shiro-web:1.4.2")
+    api(project(":shiro-ext-x509-core"))
+    api("org.apache.shiro:shiro-web:1.4.2")
 
     testImplementation("junit:junit:4.12")
 }
