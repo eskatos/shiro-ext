@@ -50,16 +50,6 @@ jobs:
         with:
           arguments: build
 
-      - name: Clean with Gradle
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: clean
-
-      - name: Build again with Gradle
-        uses: eskatos/gradle-command-action@v1
-        with:
-          arguments: build
-
       - name: After build
         run: '(test -d .gradle/configuration-cache && find .gradle/configuration-cache) || echo No .gradle/configuration-cache'
 
