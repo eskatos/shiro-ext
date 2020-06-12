@@ -1,15 +1,62 @@
 name: "CI"
-on: [push, pull_request]
+
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    paths-ignore:
+      - '**/*.md'
 
 jobs:
   ci:
     name: "CI"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup Java 11
+        uses: actions/setup-java@v1
         with:
           java-version: 11
-      - uses: eskatos/gradle-command-action@v1
+
+      - name: Get cached Gradle installation
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/wrapper/dists/gradle-6.6-milestone-1-bin/
+          key: wrapper-6.6-milestone-1
+
+      - name: Get cached build dependencies
+        id: cache-dep
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches/modules-2/
+          key: dep-${{ hashFiles('gradle/**/*.*') }}-${{ hashFiles('**/*gradle.kts') }}
+
+      - name: Get cached build configuration
+        id: cache-cc
+        uses: actions/cache@v1
+        with:
+          path: .gradle/configuration-cache
+          key: cc-${{ hashFiles('gradle/**/*.*') }}-${{ hashFiles('**/*gradle.kts') }}
+
+      - name: Before build
+        run: '(test -d .gradle/configuration-cache && find .gradle/configuration-cache) || echo No .gradle/configuration-cache'
+
+      - name: Build with Gradle
+        uses: eskatos/gradle-command-action@v1
         with:
           arguments: build
+
+      - name: After build
+        run: '(test -d .gradle/configuration-cache && find .gradle/configuration-cache) || echo No .gradle/configuration-cache'
+
+      - name: Before caching build configuration
+        if: steps.cache-cc.outputs.cache-hit != 'true'
+        run: rm -f .gradle/configuration-cache/*.lock .gradle/configuration-cache/gc.properties
+
+      - name: Before caching build dependencies
+        if: steps.cache-dep.outputs.cache-hit != 'true'
+        run: rm -f ~/.gradle/caches/modules-2/*.lock ~/.gradle/caches/modules-2/gc.properties

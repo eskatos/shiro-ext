@@ -11,12 +11,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_6
 }
 
-tasks.withType(JavaCompile::class.java) {
+tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
 }
 
 dependencies {
-    "api"("org.apache.shiro:shiro-core:1.4.2")
+    api("org.apache.shiro:shiro-core:1.4.2")
 
     implementation("org.bouncycastle:bcprov-jdk16:1.46")
     implementation("org.slf4j:slf4j-api:1.7.29")
