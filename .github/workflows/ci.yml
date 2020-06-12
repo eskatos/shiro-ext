@@ -33,6 +33,11 @@ jobs:
         with:
           arguments: build
 
+      - name: Clean with Gradle
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: clean
+
       - name: Build again with Gradle
         uses: eskatos/gradle-command-action@v1
         with:
