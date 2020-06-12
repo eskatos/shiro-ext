@@ -22,7 +22,7 @@ jobs:
         with:
           java-version: 11
 
-      - name: Get cached Gradle wrapper installation
+      - name: Get cached Gradle installation
         uses: actions/cache@v1
         with:
           path: ~/.gradle/wrapper/dists/gradle-6.6-milestone-1-bin/
