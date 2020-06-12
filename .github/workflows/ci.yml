@@ -43,7 +43,7 @@ jobs:
           key: cc-${{ hashFiles('gradle/**/*.*') }}-${{ hashFiles('**/*gradle.kts') }}
 
       - name: Before build
-        run: find .gradle/configuration-cache
+        run: '(test -d .gradle/configuration-cache && find .gradle/configuration-cache) || echo No .gradle/configuration-cache'
 
       - name: Build with Gradle
         uses: eskatos/gradle-command-action@v1
@@ -61,7 +61,7 @@ jobs:
           arguments: build
 
       - name: After build
-        run: find .gradle/configuration-cache
+        run: '(test -d .gradle/configuration-cache && find .gradle/configuration-cache) || echo No .gradle/configuration-cache'
 
       - name: Before caching build configuration
         if: steps.cache-cc.outputs.cache-hit != 'true'
