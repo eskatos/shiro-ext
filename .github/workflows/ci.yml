@@ -22,35 +22,10 @@ jobs:
         with:
           java-version: 11
 
-      - name: Get cached build dependencies
-        id: cache-dep
-        uses: actions/cache@v1
-        with:
-          path: ~/.gradle/caches/modules-2/
-          key: dep-${{ hashFiles('gradle/**/*.*') }}-${{ hashFiles('**/*gradle.kts') }}
-
-      - name: Get cached build configuration
-        id: cache-cc
-        uses: actions/cache@v1
-        with:
-          path: .gradle/configuration-cache
-          key: cc-${{ hashFiles('gradle/**/*.*') }}-${{ hashFiles('**/*gradle.kts') }}
-
-      - name: Before build
-        run: '(test -d .gradle/configuration-cache && find .gradle/configuration-cache) || echo No .gradle/configuration-cache'
-
       - name: Build with Gradle
         uses: eskatos/gradle-command-action@v1
         with:
+          dependencies-cache-enabled: true
+          configuration-cache-enabled: true
           arguments: build
 
-      - name: After build
-        run: '(test -d .gradle/configuration-cache && find .gradle/configuration-cache) || echo No .gradle/configuration-cache'
-
-      - name: Before caching build configuration
-        if: steps.cache-cc.outputs.cache-hit != 'true'
-        run: rm -f .gradle/configuration-cache/*.lock .gradle/configuration-cache/gc.properties
-
-      - name: Before caching build dependencies
-        if: steps.cache-dep.outputs.cache-hit != 'true'
-        run: rm -f ~/.gradle/caches/modules-2/*.lock ~/.gradle/caches/modules-2/gc.properties
